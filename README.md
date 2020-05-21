@@ -1,6 +1,6 @@
 # The Truth About Mr. Smiley Walkthrough
 
-There are many ways to go about solving this challenge, some more creative then others. The following is just one of the many possible methods.
+There are many ways to go about solving this challenge, some more creative than others. The following is just one of the many possible methods.
 
 ## Synopsis
 In an attempt to snag a copy of the upcoming Geography midterm, we stumbled upon a strange truth about our teacher. The student newspaper “The Severity High Tattler” wants an exclusive on what you found, but you need to gather all the evidence you can before they can go to print.
@@ -18,21 +18,21 @@ The README included the following information:
 ```
 Managed to get you the dwarf dump, but your gonna need to get the System map on your own. Wonder what kernel release it might be?
 ```
-A little research and we can quickly discover that the .lime extension can be related back to the Linux Memory Extractor [LiME](https://github.com/504ensicsLabs/LiME). A little more and we can discover that we can use a memory forensics tool called [Volatility](https://github.com/volatilityfoundation/volatility) to analyze this file. However, Volatility requires a profile associated with the system the memory was extracted from, and consists of two files:
+A little research and we can quickly discover that the .lime extension can be related back to the Linux Memory Extractor [LiME](https://github.com/504ensicsLabs/LiME). A little more and we can discover that we can use a memory forensics tool called [Volatility](https://github.com/volatilityfoundation/volatility) to analyze this file. However, Volatility requires a profile associated with the system the memory was extracted from. The profile consists of two files:
 
 	1. module.dwarf - containing the kernel's data structures. (this file was supplied)
 	2. System.map - debug symbols for the kernel we want to analyze.
 
 This is are first problem, we need to get the correct system map, one that matches the kernel running on Mr. Smiley's computer.
 
-## Determining The Correct System.map
+## Determining the Correct System.map
 
 This requires a bit of digging in a massive binary file, the simplest way I could think of was to simply grep for the linux version:
 
 ```
 $ grep -wa 'Linux version' mrSmiley.lime
 ```
-Now sure we are gonna get more then we need out of this, but right off the bat we get exactly the information we are looking for.
+Now, sure we are gonna get more then we need out of this, but right off the bat we get exactly the information we are looking for.
 
 ![output1](img1.png)
 
@@ -41,7 +41,7 @@ From the output above we can determine the system map we need has the following 
 	- Ubuntu 5.3.0-51.44~18.04.2-generic
 	- 64 bit
 	
-Now we need to get a copy of the system map, best way to get it is directly from the Ubuntu repository: 
+Now we need to get a copy of the system map. The best way to get it is directly from the Ubuntu repository: 
 
 [kernel-image-5.3.0-51-generic-di\_5.3.0-51.44~18.04.2\_amd64.udeb](http://archive.ubuntu.com/ubuntu/pool/main/l/linux-hwe/kernel-image-5.3.0-51-generic-di_5.3.0-51.44~18.04.2_amd64.udeb)
 
@@ -52,9 +52,9 @@ We can extract the system map from the archive, zip it together with the module.
 ```
 ## Analyzing the Memory
 
-Now that we have a working profile it's time to dig in! 
+Now that we have a working profile, it's time to dig in! 
 
-Because of the size of the lime file it will take volatility some time to execute a plugin (averaged about 7 min for me, but this is dependent on plugin and the system your running on).
+Because of the size of the lime file, it will take volatility some time to execute a plugin (averaged about 7 min for me, but this is dependent on the plugin and the system you're running on).
 
 ### Flag Geo 1
 
@@ -155,7 +155,7 @@ There we have the first flag __FLAG{3XTR@CT10N_M0DUL3}__.
 
 ### Flag Geo 2
 
-This flag takes a couple steps.
+This flag takes a couple of steps.
 
 __First: Looking at the bash\_history__
 
@@ -220,7 +220,7 @@ $ ./vol.py --profile=LinuxUbuntu5_3_0-51x64 -f ~/Downloads/mrSmiley/mrSmiley.lim
 ```
 Then we can take a look at Mr. Smiley's disguised TrueCrypt volume. _(If you don't have TrueCrypt you can get a copy [here](https://www.grc.com/misc/truecrypt/truecrypt.htm))_
 
-Unlocking and mounting the TrueCrypt volume we see the following files:
+Unlocking and mounting the TrueCrypt volume, we see the following files:
 ```
 .
 ├── AlwaysAndForever.txt
@@ -236,7 +236,7 @@ Reading Mr. Smiley's disturbing love letter to Lindsay Lohan's Mean Girls charac
 
 ### Flag Geo 3
 
-What better way to learn someone secrets then to take a little dive into there email. From the previous flag we got a list of files from the dump, exploring this list a little closer we can see that Mr. Smiley is running the Thunderbird mail client. From his Local Folders we can sneak a peek at his Trash folder.
+What better way to learn someone's secrets than to take a little dive into there emails. From the previous flag, we got a list of files from the dump. Exploring this list a little closer, we can see that Mr. Smiley is running the Thunderbird mail client. From his Local Folders we can sneak a peek at his Trash folder.
 
 ![image7.png](image7.png) 
 ``` 
@@ -288,7 +288,7 @@ Suite 1910, New York,
 Sent using Guerrillamail.com
 Block or report abuse: https://www.guerrillamail.com//abuse/?aDTFM6FgAJT7EMqAO1%2BXJRcRvK
 ```
-The strange run of letters and numbers after the lawyers address deserve some further investigation. A quick trip over to [CyberChef](https://gchq.github.io/CyberChef/) and we quickly identify this as the base64 encoding of __FLAG{CR@53D-5T@LK3R!}__
+The strange run of letters and numbers after the lawyer's address deserves some further investigation. A quick trip over to [CyberChef](https://gchq.github.io/CyberChef/) and we quickly identify this as the base64 encoding of __FLAG{CR@53D-5T@LK3R!}__
 
 ### Flag Geo 4
 
@@ -300,9 +300,9 @@ When we go to h4csquared.org we see the following:
 
 ![h4csquared](image4.png)
 
-However, it looks like this site is using cookies. Maybe we can get lucky and Mr. Smiley's cookie is still valid, that means we need to find his cookie first. We come up short in the ```/home/mrsmiley/.mozilla/firefox/obu0qcyo.default-release/cookies.sqlite``` but all is not lost, ```/home/mrsmiley/.mozilla/firefox/obu0qcyo.default-release/sessionstore-backups/recovery.baklz4``` gives us another (slightly more difficult) way to get our hands on the desired cookie. 
+However, it looks like this site is using cookies. Maybe we can get lucky and Mr. Smiley's cookie is still valid, which means we need to find his cookie first. We come up short in the ```/home/mrsmiley/.mozilla/firefox/obu0qcyo.default-release/cookies.sqlite``` but all is not lost, ```/home/mrsmiley/.mozilla/firefox/obu0qcyo.default-release/sessionstore-backups/recovery.baklz4``` gives us another (slightly more difficult) way to get our hands on the desired cookie. 
 
-Using a tool like [Fx File Utilities](https://www.jeffersonscher.com/ffu/scrounger.html) we can give this file a lot more human readable meaning, allowing us to discover right at the bottom the info we are looking for:
+Using a tool like [Fx File Utilities](https://www.jeffersonscher.com/ffu/scrounger.html) we can give this file a lot more human-readable meaning, allowing us to discover right at the bottom the info we are looking for:
 
 ```json
 {
@@ -329,11 +329,11 @@ Now if we head over to h4cSquared.org, open our developer tools and replace our 
 
 ### Flag Geo 5
 
-There are many quick and dirty ways to discover this flag _(this is why the point value was low)_, for simplicity sake, given that you already have access to the places.sqlite file and you know the original reason for investigating Mr. Smiley's computer was to get your hands on a copy of the Midterm test. You can use the URL with the title "Midterm Test" from the places.sqlite file and paste it into your browser:
+There are many quick and dirty ways to discover this flag _(this is why the point value was low)_, for simplicity's sake, given that you already have access to the places.sqlite file and you know the original reason for investigating Mr. Smiley's computer was to get your hands on a copy of the Midterm test. You can use the URL with the title "Midterm Test" from the places.sqlite file and paste it into your browser:
 
 ![midterm](midterm.png)
 
 From here you can see the important part of the document. However, __SYNT{F3PE3G5-Y05G}__ is the right format but not the right letters. Any CTF veteran should quickly realize that __SYNT__ is simply a ROT13 shift of __FLAG__. Shifting the full value we get the final flag __FLAG{S3CR3T5-L05T}__.
 
-_Credit to the solution of this flag goes to the teams who reached out to me while solving this flag! This was a much simpler way then I had planed for this flag! Cheers!_
+_Credit to the solution of this flag goes to the teams who reached out to me while solving this flag! This was a much simpler way then I had planned for this flag! Cheers!_
 
