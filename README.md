@@ -48,7 +48,7 @@ Now we need to get a copy of the system map, best way to get it is directly from
 We can extract the system map from the archive, zip it together with the module.dwarf that was given and add it to volatility (/volatility/plugins/overlays/linux/Ubuntu5.3.0-51.zip). You can then test your volatility to make sure it is seeing your profile:
 
 ```
-./vol.py --info | Linux
+./vol.py --info | grep Linux
 ```
 ## Analyzing the Memory
 
