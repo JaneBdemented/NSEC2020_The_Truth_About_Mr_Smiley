@@ -325,7 +325,7 @@ Now if we head over to h4cSquared.org, open our developer tools and replace our 
 
 ![flag](image6.png) 
 
-
+__Update:__ @HappyLer made the following observation about this flag: _There was an other way to solve Geo 4. The background image on the "You are not Ben Smiley !" page is "/img/image97.png". Changing this to "/img/image98.png" also gives you the flag._ Sneaky, this is a much simpler methoid.
 
 ### Flag Geo 5
 
